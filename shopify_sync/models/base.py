@@ -13,12 +13,11 @@ class ShopifyResourceModel(UserOwnedModel):
         self.user = user
 
     @classmethod
-    def sync_all_for_user(cls, user):
+    def sync_for_user(cls, user, **kwargs):
         with user.session:
-            shopify_resources = cls.shopify_resource.find()
+            shopify_resources = cls.shopify_resource.find(**kwargs)
         for shopify_resource in shopify_resources:
-            resource = cls(user, shopify_resource = shopify_resource)
-            resource.save()
+            cls(user, shopify_resource = shopify_resource).save()
 
     class Meta:
         abstract = True
