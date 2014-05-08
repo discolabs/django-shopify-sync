@@ -4,7 +4,7 @@ import shopify
 
 
 class Shop(ShopifyResourceModel):
-    shopify_resource = shopify.resources.Shop
+    shopify_resource_class = shopify.resources.Shop
     created_at = models.DateTimeField()
 
     myshopify_domain = models.CharField(max_length = 255, unique = True)
@@ -55,7 +55,7 @@ class Shop(ShopifyResourceModel):
     def sync_for_user(cls, user, **kwargs):
         with user.session:
             shopify_shop = cls.shopify_resource.current()
-        cls(user, shopify_resource = shopify_shop).save()
+        cls(user = user, shopify_resource = shopify_shop).save()
 
     class Meta:
         abstract = True

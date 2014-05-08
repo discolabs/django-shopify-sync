@@ -4,7 +4,7 @@ import shopify
 
 
 class SmartCollection(ShopifyResourceModel):
-    shopify_resource = shopify.resources.SmartCollection
+    shopify_resource_class = shopify.resources.SmartCollection
 
     handle = models.CharField(max_length = 255)
     title = models.CharField(max_length = 255)

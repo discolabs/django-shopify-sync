@@ -4,7 +4,7 @@ import shopify
 
 
 class CustomCollection(ShopifyResourceModel):
-    shopify_resource = shopify.resources.CustomCollection
+    shopify_resource_class = shopify.resources.CustomCollection
 
     handle = models.CharField(max_length = 255)
     title = models.CharField(max_length = 255)
