@@ -7,13 +7,16 @@ class ShopifyResourceModel(UserOwnedModel):
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
         shopify_resource = kwargs.pop('shopify_resource', None)
+
         super(ShopifyResourceModel, self).__init__(*args, **kwargs)
+
+        if user:
+            self.user = user
+
         if shopify_resource:
             for attribute in shopify_resource.attributes:
                 if hasattr(self, attribute):
                     setattr(self, attribute, getattr(shopify_resource, attribute))
-        if not self.user:
-            self.user = user
 
     @classmethod
     def sync_for_user(cls, user, **kwargs):
