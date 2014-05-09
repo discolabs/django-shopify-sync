@@ -54,7 +54,7 @@ class Shop(ShopifyResourceModel):
     @classmethod
     def sync_for_user(cls, user, **kwargs):
         with user.session:
-            shopify_shop = cls.shopify_resource.current()
+            shopify_shop = cls.shopify_resource_class.current()
         cls(user = user, shopify_resource = shopify_shop).save()
 
     class Meta:
