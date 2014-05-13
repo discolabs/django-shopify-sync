@@ -1,10 +1,22 @@
-from .base import ShopifyResourceModel
+from .base import ShopifyResourceModelManager, ShopifyResourceModel
 from django.db import models
 import shopify
 
 
+class ShopManager(ShopifyResourceModelManager):
+
+    def sync_for_user(self, user, **kwargs):
+        with user.session:
+            shopify_shop = self.model.shopify_resource_class.current()
+        self.create_for_user(user, shopify_shop)
+
+
 class Shop(ShopifyResourceModel):
+
     shopify_resource_class = shopify.resources.Shop
+
+    objects = ShopManager()
+
     created_at = models.DateTimeField()
 
     myshopify_domain = models.CharField(max_length = 255, unique = True)
@@ -50,12 +62,6 @@ class Shop(ShopifyResourceModel):
     eligible_for_payments = models.NullBooleanField(default = True, null = True)
     requires_extra_payments_agreement = models.NullBooleanField(default = True, null = True)
     source = models.CharField(max_length = 32, null = True)
-
-    @classmethod
-    def sync_for_user(cls, user, **kwargs):
-        with user.session:
-            shopify_shop = cls.shopify_resource_class.current()
-        cls(user = user, shopify_resource = shopify_shop).save()
 
     class Meta:
         abstract = True
