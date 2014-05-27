@@ -1,7 +1,4 @@
-Django==1.6.2
-django-tastypie==0.11.0
-PyYAML==3.11
+Django==1.6.5
 ShopifyAPI==2.0.4
-pyactiveresource==2.0.0
-wsgiref==0.1.2
+django-owned-models==0.0.3
 jsonfield==0.9.20
