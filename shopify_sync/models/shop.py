@@ -5,10 +5,11 @@ import shopify
 
 class ShopManager(ShopifyResourceModelManager):
 
-    def sync_for_user(self, user, **kwargs):
+    def sync_all_for_user(self, user, **kwargs):
+        """Fetch and synchronise all models of this resource type. Optionally use **kwargs to filter."""
         with user.session:
             shopify_shop = self.model.shopify_resource_class.current()
-        self.create_for_user(user, shopify_shop)
+        return self.sync_for_user(user, shopify_shop)
 
 
 class Shop(ShopifyResourceModel):
@@ -17,7 +18,7 @@ class Shop(ShopifyResourceModel):
 
     objects = ShopManager()
 
-    created_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add = True)
 
     myshopify_domain = models.CharField(max_length = 255, unique = True)
     domain = models.CharField(max_length = 255)
