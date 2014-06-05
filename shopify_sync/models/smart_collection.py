@@ -1,14 +1,22 @@
-from .base import ShopifyResourceModel
+from .base import ShopifyDatedResourceModel
 from django.db import models
+from jsonfield import JSONField
 import shopify
 
 
-class SmartCollection(ShopifyResourceModel):
+class SmartCollection(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.SmartCollection
 
+    body_html = models.TextField()
     handle = models.CharField(max_length = 255)
+    image = JSONField(null = True)
+    published_at = models.DateTimeField(null = True)
+    published_scope = models.CharField(max_length = 16)
+    rules = JSONField()
+    disjunctive = models.BooleanField(default = False)
+    sort_order = models.CharField(max_length = 16)
+    template_suffix = models.CharField(max_length = 32, null = True)
     title = models.CharField(max_length = 255)
-    published = models.BooleanField(default = True)
 
     class Meta:
         abstract = True

@@ -1,3 +1,4 @@
+from .collect import Collect
 from .custom_collection import CustomCollection
 from .product import Product
 from .scripttag import ScriptTag
