@@ -1,4 +1,5 @@
 from .base import ShopifyDatedResourceModel
+from .collect import Collect
 from django.db import models
 import shopify
 
@@ -15,6 +16,10 @@ class Product(ShopifyDatedResourceModel):
     template_suffix = models.CharField(max_length = 255, null = True)
     title = models.CharField(max_length = 255, db_index = True)
     vendor = models.CharField(max_length = 255, db_index = True)
+
+    @property
+    def collects(self):
+        return Collect.objects.filter_for_user(self.user, product_id = self.id)
 
     class Meta:
         app_label = 'shopify_sync'

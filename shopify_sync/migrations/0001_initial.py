@@ -113,15 +113,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('shopify_sync', ['Shop'])
 
-        # Adding model 'SmartCollect'
-        db.create_table(u'shopify_sync_smartcollect', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('user', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['product_options_app.ProductOptionsAppUser'])),
-            ('collection_id', self.gf('django.db.models.fields.IntegerField')()),
-            ('product_id', self.gf('django.db.models.fields.IntegerField')()),
-        ))
-        db.send_create_signal('shopify_sync', ['SmartCollect'])
-
         # Adding model 'SmartCollection'
         db.create_table(u'shopify_sync_smartcollection', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -133,6 +124,7 @@ class Migration(SchemaMigration):
             ('image', self.gf('jsonfield.fields.JSONField')(null=True)),
             ('published_at', self.gf('django.db.models.fields.DateTimeField')(null=True)),
             ('published_scope', self.gf('django.db.models.fields.CharField')(default='global', max_length=16)),
+            ('rules', self.gf('jsonfield.fields.JSONField')()),
             ('disjunctive', self.gf('django.db.models.fields.BooleanField')(default=False)),
             ('sort_order', self.gf('django.db.models.fields.CharField')(max_length=16)),
             ('template_suffix', self.gf('django.db.models.fields.CharField')(max_length=32, null=True)),
@@ -170,9 +162,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Shop'
         db.delete_table(u'shopify_sync_shop')
-
-        # Deleting model 'SmartCollect'
-        db.delete_table(u'shopify_sync_smartcollect')
 
         # Deleting model 'SmartCollection'
         db.delete_table(u'shopify_sync_smartcollection')
@@ -286,13 +275,6 @@ class Migration(SchemaMigration):
             'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['product_options_app.ProductOptionsAppUser']"}),
             'zip': ('django.db.models.fields.CharField', [], {'max_length': '16', 'null': 'True'})
         },
-        'shopify_sync.smartcollect': {
-            'Meta': {'object_name': 'SmartCollect'},
-            'collection_id': ('django.db.models.fields.IntegerField', [], {}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'product_id': ('django.db.models.fields.IntegerField', [], {}),
-            'user': ('django.db.models.fields.related.ForeignKey', [], {'to': "orm['product_options_app.ProductOptionsAppUser']"})
-        },
         'shopify_sync.smartcollection': {
             'Meta': {'object_name': 'SmartCollection'},
             'body_html': ('django.db.models.fields.TextField', [], {'null': 'True'}),
@@ -303,6 +285,7 @@ class Migration(SchemaMigration):
             'image': ('jsonfield.fields.JSONField', [], {'null': 'True'}),
             'published_at': ('django.db.models.fields.DateTimeField', [], {'null': 'True'}),
             'published_scope': ('django.db.models.fields.CharField', [], {'default': "'global'", 'max_length': '16'}),
+            'rules': ('jsonfield.fields.JSONField', [], {}),
             'sort_order': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
             'template_suffix': ('django.db.models.fields.CharField', [], {'max_length': '32', 'null': 'True'}),
             'title': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
