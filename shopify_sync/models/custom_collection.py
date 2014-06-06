@@ -7,15 +7,15 @@ import shopify
 class CustomCollection(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.CustomCollection
 
-    body_html = models.TextField()
+    body_html = models.TextField(null = True)
     handle = models.CharField(max_length = 255)
     image = JSONField(null = True)
     published = models.BooleanField(default = True)
     published_at = models.DateTimeField(null = True)
-    published_scope = models.CharField(max_length = 16)
+    published_scope = models.CharField(max_length = 16, default = 'global')
     sort_order = models.CharField(max_length = 16)
     template_suffix = models.CharField(max_length = 32, null = True)
     title = models.CharField(max_length = 255)
 
     class Meta:
-        abstract = True
+        app_label = 'shopify_sync'

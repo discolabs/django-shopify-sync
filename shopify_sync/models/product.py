@@ -17,4 +17,4 @@ class Product(ShopifyDatedResourceModel):
     vendor = models.CharField(max_length = 255, db_index = True)
 
     class Meta:
-        abstract = True
+        app_label = 'shopify_sync'
