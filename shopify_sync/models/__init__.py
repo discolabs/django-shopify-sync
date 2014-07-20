@@ -1,5 +1,6 @@
 from .collect import Collect
 from .custom_collection import CustomCollection
+from .image import Image
 from .product import Product
 from .script_tag import ScriptTag
 from .shop import Shop

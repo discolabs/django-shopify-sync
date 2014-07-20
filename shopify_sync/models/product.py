@@ -1,5 +1,6 @@
 from .base import ShopifyDatedResourceModel
 from .collect import Collect
+from .image import Image
 from .variant import Variant
 from django.db import models
 import shopify
@@ -17,6 +18,10 @@ class Product(ShopifyDatedResourceModel):
     template_suffix = models.CharField(max_length = 255, null = True)
     title = models.CharField(max_length = 255, db_index = True)
     vendor = models.CharField(max_length = 255, db_index = True)
+
+    @property
+    def images(self):
+        return Image.objects.filter_for_user(self.user, product_id = self.id)
 
     @property
     def collects(self):
