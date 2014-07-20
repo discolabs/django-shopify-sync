@@ -74,8 +74,8 @@ class ShopifyResourceModel(UserOwnedModel):
 
 
 class ShopifyDatedResourceModel(ShopifyResourceModel):
-    created_at = models.DateTimeField(auto_now_add = True)
-    updated_at = models.DateTimeField(auto_now = True)
+    created_at = models.DateTimeField()
+    updated_at = models.DateTimeField()
 
     class Meta:
         abstract = True
