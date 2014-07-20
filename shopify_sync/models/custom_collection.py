@@ -24,4 +24,4 @@ class CustomCollection(ShopifyDatedResourceModel):
         return Collect.objects.filter_for_user(self.user, collection_id = self.id)
 
     class Meta:
-        app_label = 'shopify_sync'
+        abstract = True

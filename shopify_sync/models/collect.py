@@ -13,4 +13,4 @@ class Collect(ShopifyDatedResourceModel):
     sort_value = models.CharField(max_length = 16, null = True)
 
     class Meta:
-        app_label = 'shopify_sync'
+        abstract = True

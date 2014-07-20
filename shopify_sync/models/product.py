@@ -44,4 +44,4 @@ class Product(ShopifyDatedResourceModel):
         return self.title
 
     class Meta:
-        app_label = 'shopify_sync'
+        abstract = True

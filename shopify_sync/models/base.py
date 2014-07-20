@@ -41,7 +41,7 @@ class ShopifyResourceModelManager(UserOwnedModelManager):
         This is partly to allow flexibility in omitting unused remote fields locally, and also partly to defend
         against any unexpected additions to the fields the Shopify API is returning."""
         cleaned_kwargs = dict((field, value) for field, value in kwargs.iteritems() if field in self.model.get_field_names())
-        return super(ShopifyResourceModelManager, self).get_or_create(user = user, **cleaned_kwargs)
+        return super(ShopifyResourceModelManager, self).get_or_create(user_id = user.id, **cleaned_kwargs)
 
     class Meta:
         abstract = True

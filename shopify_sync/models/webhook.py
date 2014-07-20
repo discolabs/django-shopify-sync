@@ -15,4 +15,4 @@ class Webhook(ShopifyDatedResourceModel):
     metafield_namespaces = JSONField(null = True)
 
     class Meta:
-        app_label = 'shopify_sync'
+        abstract = True

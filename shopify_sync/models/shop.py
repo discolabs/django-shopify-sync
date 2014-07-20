@@ -65,4 +65,4 @@ class Shop(ShopifyResourceModel):
     source = models.CharField(max_length = 32, null = True)
 
     class Meta:
-        app_label = 'shopify_sync'
+        abstract = True
