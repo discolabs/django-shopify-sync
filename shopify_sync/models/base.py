@@ -1,4 +1,5 @@
-from django.db import models
+import six
+from django.db import models, transaction
 
 from owned_models.models import UserOwnedModel, UserOwnedModelManager
 
@@ -21,10 +22,26 @@ class ShopifyResourceModelManager(UserOwnedModelManager):
 
     def sync_for_user(self, user, shopify_resource):
         """Create a local model for the given Shopify resource. If it already exists, update it."""
-        local_model, created = self.get_or_create(user, **shopify_resource.attributes)
-        if not created:
-            local_model.from_shopify_resource(shopify_resource)
-        local_model.save()
+
+        # Get a 'cleaned' hash from the shopify resource that only contains model fields we're aware of.
+        # Defends against the Shopify API returning additional fields.
+        cleaned_defaults = dict((field, value) for field, value in six.iteritems(shopify_resource.attributes) if field in self.model.get_field_names())
+
+        # Try to get an existing version of the model. If it doesn't exist, create it.
+        try:
+            local_model = self.get_for_user(user, id = shopify_resource.id)
+        except self.model.DoesNotExist:
+            local_model, created = self.get_or_create_for_user(user, id = shopify_resource.id, defaults = cleaned_defaults)
+            if created:
+                return local_model
+
+        # Copy attribute values from the cleaned defaults.
+        for field, value in six.iteritems(cleaned_defaults):
+            setattr(local_model, field, value)
+
+        # Save the updates to the database and return the updated model.
+        with transaction.atomic(using = self.db, savepoint = False):
+            local_model.save(using = self.db)
         return local_model
 
     def sync_all_for_user(self, user, **kwargs):
@@ -35,13 +52,6 @@ class ShopifyResourceModelManager(UserOwnedModelManager):
         for shopify_resource in shopify_resources:
             local_models.append(self.sync_for_user(user, shopify_resource))
         return local_models
-
-    def get_or_create(self, user, **kwargs):
-        """Override the get_or_create() method to remove kwargs that aren't mapped to fields in our local models.
-        This is partly to allow flexibility in omitting unused remote fields locally, and also partly to defend
-        against any unexpected additions to the fields the Shopify API is returning."""
-        cleaned_kwargs = dict((field, value) for field, value in kwargs.iteritems() if field in self.model.get_field_names())
-        return super(ShopifyResourceModelManager, self).get_or_create(user_id = user.id, **cleaned_kwargs)
 
     class Meta:
         abstract = True
