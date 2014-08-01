@@ -14,4 +14,4 @@ class Image(ShopifyDatedResourceModel):
         return self.src
 
     class Meta:
-        abstract = True
+        app_label = 'shopify_sync'

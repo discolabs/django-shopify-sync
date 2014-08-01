@@ -25,4 +25,4 @@ class SmartCollection(ShopifyDatedResourceModel):
         return Collect.objects.filter_for_user(self.user, collection_id = self.id)
 
     class Meta:
-        abstract = True
+        app_label = 'shopify_sync'

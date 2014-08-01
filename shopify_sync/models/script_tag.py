@@ -10,4 +10,4 @@ class ScriptTag(ShopifyDatedResourceModel):
     src = models.URLField()
 
     class Meta:
-        abstract = True
+        app_label = 'shopify_sync'

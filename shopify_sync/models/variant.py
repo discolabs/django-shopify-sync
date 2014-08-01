@@ -25,4 +25,4 @@ class Variant(ShopifyDatedResourceModel):
     title = models.CharField(max_length = 255)
 
     class Meta:
-        abstract = True
+        app_label = 'shopify_sync'
