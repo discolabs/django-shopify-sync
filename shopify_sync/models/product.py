@@ -8,6 +8,9 @@ import shopify
 
 class Product(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Product
+    shopify_child_attributes = {
+        'variants': Variant
+    }
 
     body_html = models.TextField()
     handle = models.CharField(max_length = 255, db_index = True)

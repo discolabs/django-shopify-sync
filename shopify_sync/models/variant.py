@@ -5,6 +5,7 @@ import shopify
 
 class Variant(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Variant
+    shopify_parent_field = 'product_id'
 
     barcode = models.CharField(max_length = 255, null = True)
     compare_at_price = models.DecimalField(max_digits = 10, decimal_places = 2, null = True)
@@ -18,7 +19,7 @@ class Variant(ShopifyDatedResourceModel):
     option3 = models.CharField(max_length = 255, null = True)
     position = models.IntegerField()
     price = models.DecimalField(max_digits = 10, decimal_places = 2)
-    product_id = models.IntegerField()
+    product = models.ForeignKey('shopify_sync.Product')
     requires_shipping = models.BooleanField(default = True)
     sku = models.CharField(max_length = 255, null = True)
     taxable = models.BooleanField(default = True)
