@@ -1,4 +1,5 @@
-Django==1.6.5
-ShopifyAPI==2.1.0
-jsonfield==0.9.22
-django-owned-models==0.0.3
+django >=1.6.5, <1.7
+django-owned-models >=0.0.4
+ShopifyAPI >=2.1.0
+jsonfield >=0.9.22
+setuptools >=5.7
