@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 version = __import__('shopify_sync').__version__
 
@@ -12,17 +12,11 @@ setup(
     url = 'https://github.com/gavinballard/django-shopify-sync',
     license = 'MIT',
 
-    packages = [
-        'shopify_sync'
-    ],
-
-    package_dir = {
-        'shopify_sync': 'shopify_sync',
-    },
+    packages = find_packages(),
 
     install_requires = [
         'django >=1.6.5, <1.7',
-        'django-owned-models >=0.0.4',
+        'django-owned-models >=0.0.5',
         'ShopifyAPI >=2.1.0',
         'jsonfield >=0.9.22',
     ],
