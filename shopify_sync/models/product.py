@@ -50,6 +50,3 @@ class Product(ShopifyDatedResourceModel):
 
     def __unicode__(self):
         return self.title
-
-    class Meta:
-        app_label = 'shopify_sync'

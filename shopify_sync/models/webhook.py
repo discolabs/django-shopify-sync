@@ -13,6 +13,3 @@ class Webhook(ShopifyDatedResourceModel):
     format = models.CharField(max_length = 4)
     fields = JSONField(null = True, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     metafield_namespaces = JSONField(null = True)
-
-    class Meta:
-        app_label = 'shopify_sync'

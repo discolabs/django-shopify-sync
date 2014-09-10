@@ -12,6 +12,3 @@ class Image(ShopifyDatedResourceModel):
 
     def __unicode__(self):
         return self.src
-
-    class Meta:
-        app_label = 'shopify_sync'
