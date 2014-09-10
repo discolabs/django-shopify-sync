@@ -1,7 +1,7 @@
 import six, json
 from django.db import models, transaction
 
-from owned_models.models import UserOwnedModel, UserOwnedModelManager
+from owned_models.models import UserOwnedModel, UserOwnedManager
 
 
 def get_shopify_sync_model(model):
@@ -10,11 +10,13 @@ def get_shopify_sync_model(model):
     return model
 
 
-class ShopifyResourceModelManager(UserOwnedModelManager):
+class ShopifyResourceModelManager(UserOwnedManager):
 
-    def create_for_user(self, user, **kwargs):
-        """Create a new Shopify resource, then synchronise and save it to a local model."""
-
+    def create(self, user, **kwargs):
+        """
+        Override the create() method of the UserOwnedManager.
+        Creates the resource through an API call to Shopify, then syncs and saves locally.
+        """
         # Instantiate the new model and get its Shopify resource equivalent.
         local_model = self.model(user = user, **kwargs)
 
