@@ -1,15 +1,15 @@
-from django.test import TestCase
-
-from shopify_sync.models import SmartCollection
+from ..models import SmartCollection
 from shopify.resources import SmartCollection as ShopifySmartCollection
 
-from .recipes import UserRecipe, SmartCollectionRecipe
+from shopify_webhook.tests import AbstractWebhookTestCase
+
+from .recipes import UserRecipe
 from datetime import datetime
 
 
-class SmartCollectionSyncTestCase(TestCase):
+class SmartCollectionSyncTestCase(AbstractWebhookTestCase):
 
-    def test_smart_collection_created_on_sync(self):
+    def test_smart_collection_created_on_direct_sync(self):
         # Get a user to test with.
         user = UserRecipe.make(id = 1)
 
@@ -37,3 +37,25 @@ class SmartCollectionSyncTestCase(TestCase):
             self.assertEqual(shopify_resource.id, smart_collection.id, "Smart Collection ID attribute was synced to the database.")
             self.assertEqual(shopify_resource.title, smart_collection.title, "Smart Collection title attribute was synced to the database.")
 
+    def test_smart_collection_created_on_webhook(self):
+        # Create a test domain.
+        domain = 'test.myshopify.com'
+
+        # Get a user to test with.
+        user = UserRecipe.make(id = 1, username = domain)
+
+        # Get the data to send in the POST.
+        data = self.read_fixture('smartcollection_created')
+
+        # Make a webhook request.
+        response = self.post_shopify_webhook(topic = 'collections/create', domain = domain, data = data)
+        self.assertEqual(response.status_code, 200, 'POST collections/create request with valid HMAC returns 200 (OK).')
+
+        # Fetch the smart collections for the user and verify synchronisation worked correctly.
+        smart_collections = SmartCollection.objects.all(user)
+        self.assertEqual(len(smart_collections), 1, "Smart Collection was synced to database.")
+
+        # Check we can fetch that collection from the database by ID and that its attributes are correct.
+        smart_collection = SmartCollection.objects.get(user, id = data['id'])
+        self.assertEqual(data['id'], smart_collection.id, "Smart Collection ID attribute was synced to the database.")
+        self.assertEqual(data['title'], smart_collection.title, "Smart Collection title attribute was synced to the database.")

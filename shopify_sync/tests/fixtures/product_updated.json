@@ -1,0 +1,102 @@
+{
+  "body_html":"This is my test product. It's great.",
+  "created_at":"2014-09-10T12:11:09-04:00",
+  "handle":"my-test-product",
+  "id":365103141,
+  "product_type":"Test Product Type",
+  "published_at":"2014-09-10T12:09:00-04:00",
+  "published_scope":"global",
+  "template_suffix":"",
+  "title":"My Test Product",
+  "updated_at":"2014-09-10T12:15:43-04:00",
+  "vendor":"Test Vendor",
+  "tags":"Test Tag",
+  "variants":[
+    {
+      "barcode":"",
+      "compare_at_price":"150.00",
+      "created_at":"2014-09-10T12:11:10-04:00",
+      "fulfillment_service":"manual",
+      "grams":500,
+      "id":935964477,
+      "inventory_management":null,
+      "inventory_policy":"deny",
+      "option1":"Blue",
+      "option2":"Small",
+      "option3":null,
+      "position":1,
+      "price":"100.00",
+      "product_id":365103141,
+      "requires_shipping":true,
+      "sku":"",
+      "taxable":true,
+      "title":"Blue / Small",
+      "updated_at":"2014-09-10T12:15:43-04:00",
+      "inventory_quantity":1,
+      "old_inventory_quantity":1,
+      "image_id":null
+    },
+    {
+      "barcode":"",
+      "compare_at_price":"150.00",
+      "created_at":"2014-09-10T12:15:30-04:00",
+      "fulfillment_service":"manual",
+      "grams":500,
+      "id":935969769,
+      "inventory_management":null,
+      "inventory_policy":"deny",
+      "option1":"Red",
+      "option2":"Large",
+      "option3":null,
+      "position":2,
+      "price":"100.00",
+      "product_id":365103141,
+      "requires_shipping":true,
+      "sku":"",
+      "taxable":true,
+      "title":"Red / Large",
+      "updated_at":"2014-09-10T12:15:30-04:00",
+      "inventory_quantity":1,
+      "old_inventory_quantity":1,
+      "image_id":null
+    }
+  ],
+  "options":[
+    {
+      "id":431235249,
+      "name":"Color",
+      "position":1,
+      "product_id":365103141
+    },
+    {
+      "id":431236321,
+      "name":"Size",
+      "position":2,
+      "product_id":365103141
+    }
+  ],
+  "images":[
+    {
+      "created_at":"2014-09-10T12:11:10-04:00",
+      "id":1030023213,
+      "position":1,
+      "product_id":365103141,
+      "updated_at":"2014-09-10T12:11:10-04:00",
+      "src":"https://cdn.shopify.com/s/files/1/0378/8917/products/1000x560.gif?v=1410365470",
+      "variant_ids":[
+
+      ]
+    }
+  ],
+  "image":{
+    "created_at":"2014-09-10T12:11:10-04:00",
+    "id":1030023213,
+    "position":1,
+    "product_id":365103141,
+    "updated_at":"2014-09-10T12:11:10-04:00",
+    "src":"https://cdn.shopify.com/s/files/1/0378/8917/products/1000x560.gif?v=1410365470",
+    "variant_ids":[
+
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "body_html":"this is a smart one.",
+  "disjunctive":false,
+  "handle":"smart-collection",
+  "id":25802393,
+  "published_at":"2014-09-10T12:01:00-04:00",
+  "published_scope":"global",
+  "sort_order":"alpha-asc",
+  "template_suffix":null,
+  "title":"Smart Collection",
+  "updated_at":"2014-09-10T12:01:42-04:00",
+  "rules":[
+    {
+      "column":"title",
+      "relation":"contains",
+      "condition":"Buttons"
+    }
+  ]
+}

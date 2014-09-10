@@ -69,6 +69,12 @@ class ShopifyResourceModel(UserOwnedModel):
         """
         return []
 
+    @classmethod
+    def shopify_resource_from_json(cls, json):
+        instance = cls.shopify_resource_class()
+        instance.attributes = json
+        return instance
+
     class Meta:
         abstract = True
 

@@ -1,4 +1,4 @@
-from .base import ShopifyDatedResourceModel
+from .base import ShopifyResourceModel
 from .collect import Collect
 from ..encoders import ShopifyDjangoJSONEncoder
 from django.db import models
@@ -6,7 +6,7 @@ from jsonfield import JSONField
 import shopify
 
 
-class SmartCollection(ShopifyDatedResourceModel):
+class SmartCollection(ShopifyResourceModel):
     shopify_resource_class = shopify.resources.SmartCollection
 
     body_html = models.TextField(null = True)
@@ -19,6 +19,7 @@ class SmartCollection(ShopifyDatedResourceModel):
     sort_order = models.CharField(max_length = 16)
     template_suffix = models.CharField(max_length = 32, null = True)
     title = models.CharField(max_length = 255)
+    updated_at = models.DateTimeField()
 
     @property
     def collects(self):
