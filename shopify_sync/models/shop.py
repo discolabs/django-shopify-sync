@@ -1,9 +1,9 @@
-from .base import ShopifyResourceModelManager, ShopifyResourceModel
+from .base import ShopifyResourceManager, ShopifyResourceModel
 from django.db import models
 import shopify
 
 
-class ShopManager(ShopifyResourceModelManager):
+class ShopManager(ShopifyResourceManager):
 
     def sync_all_for_user(self, user, **kwargs):
         """Fetch and synchronise all models of this resource type. Optionally use **kwargs to filter."""
