@@ -10,14 +10,22 @@ class ShopifyResourceManager(UserOwnedManager):
 
     def sync_one(self, user, shopify_resource):
         """
-        Given an instance of a Shopify resource, synchronise it locally so that we have an up-to-date version in the
-        local database. Returns the created or updated model.
+        Given a Shopify resource object, synchronise it locally so that we have an up-to-date version in the local
+        database. Returns the created or updated local model.
         """
         instance, created = self.update_or_create(user, id = shopify_resource.id, defaults = self.model.get_defaults(shopify_resource))
         return instance
 
-    def sync_all(self, user, **kwargs):
-        pass
+    def sync_many(self, user, shopify_resources):
+        """
+        Given an array of Shopify resource objects, synchronise all of them locally so that we have up-to-date versions
+        in the local database, Returns an array of the created or updated local models.
+        """
+        instances = []
+        for shopify_resource in shopify_resources:
+            instance = self.sync_one(user, shopify_resource)
+            instances.append(instance)
+        return instances
 
     class Meta:
         abstract = True
@@ -27,6 +35,8 @@ class ShopifyResourceModel(UserOwnedModel):
     """
     Base class for local Model objects that are to be synchronised with Shopify.
     """
+
+    shopify_resource_class = None
 
     objects = ShopifyResourceManager()
 
