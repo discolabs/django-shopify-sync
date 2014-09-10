@@ -21,9 +21,19 @@ class SmartCollectionSyncTestCase(TestCase):
         shopify_resource.updated_at = datetime.now()
 
         # Perform synchronisation from the Shopify resource.
-        SmartCollection.objects.sync_one(user, shopify_resource)
+        for i in range(1, 3):
+            # Set the title based on the iteration number.
+            shopify_resource.title = "SmartCollection #{0}".format(i)
 
-        # Fetch the smart collections for the user and verify synchronisation worked correctly.
-        smart_collection = SmartCollection.objects.get(user, id = 123)
+            # Perform the syncronisation.
+            SmartCollection.objects.sync_one(user, shopify_resource)
 
-        self.assertEqual(shopify_resource.id, smart_collection.id, "Synced OK")
+            # Fetch the smart collections for the user and verify synchronisation worked correctly.
+            smart_collections = SmartCollection.objects.all(user)
+            self.assertEqual(len(smart_collections), 1, "Smart Collection was synced to database.")
+
+            # Check we can fetch that collection from the database by ID and that its attributes are correct.
+            smart_collection = SmartCollection.objects.get(user, id = 123)
+            self.assertEqual(shopify_resource.id, smart_collection.id, "Smart Collection ID attribute was synced to the database.")
+            self.assertEqual(shopify_resource.title, smart_collection.title, "Smart Collection title attribute was synced to the database.")
+
