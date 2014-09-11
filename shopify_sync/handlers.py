@@ -3,7 +3,6 @@ from .models import CustomCollection
 from .models import Product
 
 from django.contrib.auth import get_user_model
-from django.conf import settings
 
 
 def get_topic_model(topic, data):
@@ -11,9 +10,6 @@ def get_topic_model(topic, data):
     Return the model related to the given topic, if it's a valid topic permitted by theme settings.
     If the topic isn't permitted, or there's no rule mapping the given topic to a model, None is returned.
     """
-    if topic not in getattr(settings, 'SHOPIFY_SYNC_WEBHOOK_TOPICS', []):
-        return None
-
     if topic.startswith('collections/'):
         if 'rules' in data:
             return SmartCollection

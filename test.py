@@ -18,9 +18,6 @@ settings.configure(
     ROOT_URLCONF = 'shopify_webhook.urls',
     USE_TZ = True,
     SHOPIFY_APP_API_SECRET = 'hush',
-    SHOPIFY_SYNC_WEBHOOK_TOPICS = [
-        'collections/create'
-    ],
 )
 
 django.setup()
