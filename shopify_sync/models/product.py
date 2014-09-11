@@ -8,9 +8,6 @@ import shopify
 
 class Product(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Product
-    shopify_child_attributes = {
-        'variants': Variant
-    }
 
     body_html = models.TextField()
     handle = models.CharField(max_length = 255, db_index = True)
@@ -24,15 +21,15 @@ class Product(ShopifyDatedResourceModel):
 
     @property
     def images(self):
-        return Image.objects.filter_for_user(self.user, product_id = self.id)
+        return Image.objects.filter(self.user, product_id = self.id)
 
     @property
     def collects(self):
-        return Collect.objects.filter_for_user(self.user, product_id = self.id)
+        return Collect.objects.filter(self.user, product_id = self.id)
 
     @property
     def variants(self):
-        return Variant.objects.filter_for_user(self.user, product_id = self.id)
+        return Variant.objects.filter(self.user, product_id = self.id)
 
     @property
     def price(self):

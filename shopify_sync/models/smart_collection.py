@@ -1,9 +1,10 @@
-from .base import ShopifyResourceModel
-from .collect import Collect
-from ..encoders import ShopifyDjangoJSONEncoder
 from django.db import models
 from jsonfield import JSONField
 import shopify
+
+from .base import ShopifyResourceModel
+from .collect import Collect
+from ..encoders import ShopifyDjangoJSONEncoder
 
 
 class SmartCollection(ShopifyResourceModel):

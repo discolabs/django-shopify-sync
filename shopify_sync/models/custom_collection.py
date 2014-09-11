@@ -1,12 +1,13 @@
-from .base import ShopifyDatedResourceModel
-from .collect import Collect
-from ..encoders import ShopifyDjangoJSONEncoder
 from django.db import models
 from jsonfield import JSONField
 import shopify
 
+from .base import ShopifyResourceModel
+from .collect import Collect
+from ..encoders import ShopifyDjangoJSONEncoder
 
-class CustomCollection(ShopifyDatedResourceModel):
+
+class CustomCollection(ShopifyResourceModel):
     shopify_resource_class = shopify.resources.CustomCollection
 
     body_html = models.TextField(null = True)
@@ -18,7 +19,8 @@ class CustomCollection(ShopifyDatedResourceModel):
     sort_order = models.CharField(max_length = 16)
     template_suffix = models.CharField(max_length = 32, null = True)
     title = models.CharField(max_length = 255)
+    updated_at = models.DateTimeField()
 
     @property
     def collects(self):
-        return Collect.objects.filter_for_user(self.user, collection_id = self.id)
+        return Collect.objects.filter(self.user, collection_id = self.id)
