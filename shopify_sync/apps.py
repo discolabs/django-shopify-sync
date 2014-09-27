@@ -1,11 +1,7 @@
 from django.apps import AppConfig
-from django.conf import settings
-from django.core.exceptions import ImproperlyConfigured
 
 from shopify_webhook.signals import webhook_received
 from shopify_sync.handlers import webhook_received_handler
-
-import shopify
 
 
 class ShopifySyncConfig(AppConfig):

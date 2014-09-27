@@ -36,7 +36,17 @@ class ShopifyResourceManager(UserOwnedManager):
             instance = self.sync_one(user, shopify_resource)
             instances.append(instance)
         return instances
-
+    
+    def create_from_json(self, user, json):
+        """
+        Create a new instance of this resource on Shopify using the given JSON, then synchronise locally if successful.
+        """
+        shopify_resource = self.model.shopify_resource_from_json(json)
+        with user.session:
+            if not shopify_resource.save():
+                raise Exception('Could not save.')
+        return self.sync_one(user, shopify_resource)
+        
     class Meta:
         abstract = True
 
@@ -109,7 +119,7 @@ class ShopifyResourceModel(UserOwnedModel):
 
         instance.attributes = json
         return instance
-
+    
     class Meta:
         abstract = True
 
