@@ -17,7 +17,7 @@ setup(
     install_requires = [
         'django >=1.7',
         'django-owned-models >=0.1.1',
-        'django-shopify-webhook >=0.2.4',
+        'django-shopify-webhook >=0.2.5',
         'ShopifyAPI >=2.1.0',
         'jsonfield >=0.9.22',
     ],
