@@ -29,11 +29,14 @@ def webhook_received_handler(sender, domain, topic, data, **kwargs):
     """
     Signal handler to process
     """
+        
     # Check that we know which user is related to this incoming webhook.
-    # Assumes the 'username' field on the user model is equivalent to the domain.
+    # Assumes the USERNAME_FIELD on the user model is equivalent to the domain.
     user_model = get_user_model()
     try:
-        user = user_model.objects.get(username = domain)
+        user = user_model.objects.get(**{
+            user_model.USERNAME_FIELD: domain 
+        })
     except user_model.DoesNotExist:
         return
 
