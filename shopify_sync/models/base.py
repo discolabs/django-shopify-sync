@@ -1,6 +1,16 @@
-from django.db import models
+import math
 
+from django.db import models
 from owned_models.models import UserOwnedModel, UserOwnedManager
+
+from .. import SHOPIFY_API_PAGE_LIMIT
+
+
+def get_shopify_pagination(total_count):
+    """
+    Get the appropriate pagination to use with Shopify's API given the total number of records.
+    """
+    return 1, int(math.ceil(float(total_count) / float(SHOPIFY_API_PAGE_LIMIT))), SHOPIFY_API_PAGE_LIMIT
 
 
 class ShopifyResourceManager(UserOwnedManager):
@@ -36,6 +46,29 @@ class ShopifyResourceManager(UserOwnedManager):
             instance = self.sync_one(user, shopify_resource)
             instances.append(instance)
         return instances
+    
+    def sync_all(self, user, **kwargs):
+        """
+        Synchronised all Shopify resources matched by the given **kwargs filter to our local database.
+        Returns the synchronised local model instances.
+        """
+        shopify_resources = self.fetch_all(user, **kwargs)
+        return self.sync_many(user, shopify_resources)
+    
+    def fetch_all(self, user, **kwargs):
+        """
+        Generator function, which fetches all Shopify resources matched by the given **kwargs filter.
+        """
+        with user.session:
+            total_count = self.model.shopify_resource_class.count()
+            current_page, total_pages, kwargs['limit'] = get_shopify_pagination(total_count)
+                        
+            while current_page <= total_pages:
+                kwargs['page'] = current_page
+                shopify_resources = self.model.shopify_resource_class.find(**kwargs)
+                for shopify_resource in shopify_resources:
+                    yield shopify_resource
+                current_page += 1
     
     def create_from_json(self, user, json):
         """
