@@ -1,6 +1,7 @@
 from .models import SmartCollection
 from .models import CustomCollection
 from .models import Product
+from .models import Shop
 
 from django.contrib.auth import get_user_model
 
@@ -17,6 +18,9 @@ def get_topic_model(topic, data):
 
     if topic.startswith('products/'):
         return Product
+
+    if topic.startswith('shop/'):
+        return Shop
 
     return None
 
