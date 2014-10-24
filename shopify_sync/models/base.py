@@ -1,9 +1,12 @@
 import math
+import logging
 
 from django.db import models
 from owned_models.models import UserOwnedModel, UserOwnedManager
 
 from .. import SHOPIFY_API_PAGE_LIMIT
+
+logger = logging.getLogger(__name__)
 
 
 def get_shopify_pagination(total_count):
@@ -77,7 +80,9 @@ class ShopifyResourceManager(UserOwnedManager):
         shopify_resource = self.model.shopify_resource_from_json(json)
         with user.session:
             if not shopify_resource.save():
-                raise Exception('Could not save.')
+                message = '[User]: {0} [Shopify API Errors]: {1}'.format(user.id, ', '.join(shopify_resource.errors.full_messages()))
+                logger.error(message)
+                raise Exception(message)
         return self.sync_one(user, shopify_resource)
         
     class Meta:
