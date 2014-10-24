@@ -5,11 +5,13 @@ import shopify
 
 class ShopManager(ShopifyResourceManager):
 
-    def sync_all_for_user(self, user, **kwargs):
-        """Fetch and synchronise all models of this resource type. Optionally use **kwargs to filter."""
+    def fetch_all(self, user, **kwargs):
+        """
+        Override the default fetch_all() generator function, as there is no traditional API endpoint for fetching Shop
+        resources. Instead, we just yield the singular Shop instance.
+        """
         with user.session:
-            shopify_shop = self.model.shopify_resource_class.current()
-        return self.sync_for_user(user, shopify_shop)
+            yield self.model.shopify_resource_class.current()
 
 
 class Shop(ShopifyResourceModel):
