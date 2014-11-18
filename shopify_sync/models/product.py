@@ -2,6 +2,7 @@ from .base import ShopifyDatedResourceModel
 from .collect import Collect
 from .image import Image
 from .variant import Variant
+from .option import Option
 from django.db import models
 import shopify
 
@@ -11,6 +12,7 @@ class Product(ShopifyDatedResourceModel):
     child_fields = {
         'images': Image,
         'variants': Variant,
+        'options': Option,
     }
 
     body_html = models.TextField()
@@ -34,6 +36,10 @@ class Product(ShopifyDatedResourceModel):
     @property
     def variants(self):
         return Variant.objects.filter(self.user, product_id = self.id)
+
+    @property
+    def options(self):
+        return Option.objects.filter(self.user, product_id = self.id)
 
     @property
     def price(self):
