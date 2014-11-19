@@ -30,6 +30,7 @@ class Order(ShopifyDatedResourceModel):
     note_attributes = jsonfield.JSONField()
     number = models.IntegerField()
     order_number = models.IntegerField()
+    processed_at = models.DateTimeField()
     processing_method = models.CharField(max_length = 32)
     referring_site = models.URLField(null = True)
     shipping_address = jsonfield.JSONField(null = True)
