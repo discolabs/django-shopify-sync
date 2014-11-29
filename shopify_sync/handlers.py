@@ -31,7 +31,7 @@ def get_topic_action(topic):
 
 def webhook_received_handler(sender, domain, topic, data, **kwargs):
     """
-    Signal handler to process
+    Signal handler to process a received webhook.
     """
         
     # Check that we know which user is related to this incoming webhook.
