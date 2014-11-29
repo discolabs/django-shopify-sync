@@ -1,9 +1,11 @@
 import math
 import logging
+import json
 
 from django.db import models
-from owned_models.models import UserOwnedModel, UserOwnedManager
+from django.core.serializers.json import DjangoJSONEncoder
 
+from owned_models.models import UserOwnedModel, UserOwnedManager
 from .. import SHOPIFY_API_PAGE_LIMIT
 
 
@@ -115,6 +117,8 @@ class ShopifyResourceModel(UserOwnedModel):
 
     objects = ShopifyResourceManager()
 
+    json_encoder = DjangoJSONEncoder()
+
     @classmethod
     def get_defaults(cls, shopify_resource):
         """
@@ -186,7 +190,12 @@ class ShopifyResourceModel(UserOwnedModel):
                 # If the attribute is itself a ShopifyResourceModel, ignore it.
                 # The relevant resource will be linked through a '_id' parameter.
                 if not isinstance(attribute, ShopifyResourceModel):
-                    setattr(instance, default_field, getattr(self, default_field))
+                    try:
+                        attribute_encoded = self.json_encoder.default(attribute)
+                    except TypeError:
+                        attribute_encoded = attribute
+                    finally:
+                        setattr(instance, default_field, attribute_encoded)
 
         # Recursively instantiate any child attributes.
         for child_field, child_model in self.get_child_fields().items():
