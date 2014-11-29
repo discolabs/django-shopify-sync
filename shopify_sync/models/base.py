@@ -6,6 +6,7 @@ from owned_models.models import UserOwnedModel, UserOwnedManager
 
 from .. import SHOPIFY_API_PAGE_LIMIT
 
+
 logger = logging.getLogger(__name__)
 
 
@@ -72,7 +73,7 @@ class ShopifyResourceManager(UserOwnedManager):
                 for shopify_resource in shopify_resources:
                     yield shopify_resource
                 current_page += 1
-    
+
     def create_from_json(self, user, json):
         """
         Create a new instance of this resource on Shopify using the given JSON, then synchronise locally if successful.
@@ -157,7 +158,35 @@ class ShopifyResourceModel(UserOwnedModel):
 
         instance.attributes = json
         return instance
-    
+
+    def to_shopify_resource(self):
+        """
+        Convert this ShopifyResource model to its equivalent ShopifyResource.
+        """
+        instance = self.shopify_resource_class()
+
+        # Copy across attributes.
+        for default_field in self.get_default_fields():
+            if hasattr(self, default_field):
+                attribute = getattr(self, default_field)
+                # If the attribute is itself a ShopifyResourceModel, ignore it.
+                # The relevant resource will be linked through a '_id' parameter.
+                if not isinstance(attribute, ShopifyResourceModel):
+                    setattr(instance, default_field, getattr(self, default_field))
+
+        # Recursively instantiate any child attributes.
+        for child_field, child_model in self.get_child_fields().items():
+            if hasattr(self, child_field):
+                setattr(instance, child_field, [child.to_shopify_resource() for child in getattr(self, child_field)])
+
+        return instance
+
+    def to_json(self):
+        """
+        Convert this model to a "JSON" (simple Python) object.
+        """
+        return self.to_shopify_resource().attributes
+
     class Meta:
         abstract = True
 
