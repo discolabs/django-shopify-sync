@@ -80,9 +80,17 @@ class ShopifyResourceManager(UserOwnedManager):
         """
         Push a local model instance to Shopify, creating or updating in the process.
 
+        The instance parameter can be either a ShopifyResourceModel, or an already-prepared ShopifyResource.
+
         Returns the locally synchronised model on success.
         """
-        shopify_resource = instance.to_shopify_resource()
+        # Ensure we have a ShopifyResource prepared.
+        if hasattr(instance, 'to_shopify_resource'):
+            shopify_resource = instance.to_shopify_resource()
+        else:
+            shopify_resource = instance
+
+        # Save the Shopify resource.
         with user.session:
             if not shopify_resource.save():
                 message = '[User]: {0} [Shopify API Errors]: {1}'.format(user.id, ', '.join(shopify_resource.errors.full_messages()))
