@@ -74,18 +74,32 @@ class ShopifyResourceManager(UserOwnedManager):
                     yield shopify_resource
                 current_page += 1
 
-    def create_from_json(self, user, json):
+    def push_one(self, user, instance):
         """
-        Create a new instance of this resource on Shopify using the given JSON, then synchronise locally if successful.
+        Push a local model instance to Shopify, creating or updating in the process.
+
+        Returns the locally synchronised model on success.
         """
-        shopify_resource = self.model.shopify_resource_from_json(json)
+        shopify_resource = instance.to_shopify_resource()
         with user.session:
             if not shopify_resource.save():
                 message = '[User]: {0} [Shopify API Errors]: {1}'.format(user.id, ', '.join(shopify_resource.errors.full_messages()))
                 logger.error(message)
                 raise Exception(message)
         return self.sync_one(user, shopify_resource)
-        
+
+    def push_many(self, user, instances):
+        """
+        Push a list of local model instances to Shopify, creating or updating in the process.
+
+        Returns the list of locally synchronised models on success.
+        """
+        synchronised_instances = []
+        for instance in instances:
+            synchronised_instance = self.push_one(user, instance)
+            synchronised_instances.append(synchronised_instance)
+        return synchronised_instances
+
     class Meta:
         abstract = True
 
@@ -161,7 +175,7 @@ class ShopifyResourceModel(UserOwnedModel):
 
     def to_shopify_resource(self):
         """
-        Convert this ShopifyResource model to its equivalent ShopifyResource.
+        Convert this ShopifyResource model instance to its equivalent ShopifyResource.
         """
         instance = self.shopify_resource_class()
 
@@ -183,7 +197,7 @@ class ShopifyResourceModel(UserOwnedModel):
 
     def to_json(self):
         """
-        Convert this model to a "JSON" (simple Python) object.
+        Convert this ShopifyResource model instance to a "JSON" (simple Python) object.
         """
         return self.to_shopify_resource().attributes
 
