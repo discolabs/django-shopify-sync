@@ -1,3 +1,4 @@
+from .carrier_service import CarrierService
 from .collect import Collect
 from .custom_collection import CustomCollection
 from .image import Image
