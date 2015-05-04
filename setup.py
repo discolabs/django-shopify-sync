@@ -18,7 +18,7 @@ setup(
         'django >=1.7',
         'django-owned-models >=0.1.1',
         'django-shopify-webhook >=0.2.6',
-        'ShopifyAPI >=2.1.0',
+        'ShopifyAPI >=2.1.1',
         'jsonfield >=0.9.22',
     ],
 
