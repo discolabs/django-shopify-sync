@@ -11,3 +11,6 @@ class Collect(ShopifyDatedResourceModel):
     position = models.IntegerField(null = True)
     product_id = models.IntegerField()
     sort_value = models.CharField(max_length = 16, null = True)
+
+    class Meta:
+        app_label = 'shopify_sync'

@@ -26,3 +26,6 @@ class CarrierService(ShopifyResourceModel):
     format = models.CharField(max_length = 8, choices = FORMATS, default = FORMAT_JSON)
     name = models.CharField(max_length = 255)
     service_discovery = models.BooleanField(default = True)
+
+    class Meta:
+        app_label = 'shopify_sync'

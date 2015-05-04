@@ -45,6 +45,9 @@ class Order(ShopifyDatedResourceModel):
     total_tax = models.DecimalField(max_digits = 10, decimal_places = 2)
     total_weight = models.DecimalField(max_digits = 10, decimal_places = 2)
 
+    class Meta:
+        app_label = 'shopify_sync'
+
     @property
     def fulfillments(self):
         return []

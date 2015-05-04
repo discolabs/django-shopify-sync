@@ -28,3 +28,6 @@ class Metafield(ShopifyDatedResourceModel):
     owner_resource = models.CharField(max_length = 32, choices = OWNER_RESOURCE_CHOICES, default = OWNER_RESOURCE_SHOP)
     value = models.TextField()
     value_type = models.CharField(max_length = 32, choices = VALUE_TYPE_CHOICES, default = VALUE_TYPE_STRING)
+
+    class Meta:
+        app_label = 'shopify_sync'

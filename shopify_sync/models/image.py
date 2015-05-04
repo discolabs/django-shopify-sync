@@ -12,5 +12,8 @@ class Image(ShopifyDatedResourceModel):
     product = models.ForeignKey('shopify_sync.Product')
     src = models.URLField()
 
+    class Meta:
+        app_label = 'shopify_sync'
+
     def __unicode__(self):
         return self.src

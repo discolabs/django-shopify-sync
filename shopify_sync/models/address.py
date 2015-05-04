@@ -20,3 +20,6 @@ class Address(ShopifyResourceModel):
     province = models.CharField(max_length = 32, null = True)
     province_code = models.CharField(max_length = 32, null = True)
     zip = models.CharField(max_length = 16, null = True)
+
+    class Meta:
+        app_label = 'shopify_sync'

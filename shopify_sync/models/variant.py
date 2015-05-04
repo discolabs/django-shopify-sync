@@ -24,3 +24,6 @@ class Variant(ShopifyDatedResourceModel):
     sku = models.CharField(max_length = 255, null = True)
     taxable = models.BooleanField(default = True)
     title = models.CharField(max_length = 255)
+
+    class Meta:
+        app_label = 'shopify_sync'

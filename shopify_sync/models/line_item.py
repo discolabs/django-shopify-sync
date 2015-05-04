@@ -26,3 +26,6 @@ class LineItem(ShopifyResourceModel):
     gift_card = models.BooleanField(default = False)
     taxable = models.BooleanField(default = False)
     tax_lines = jsonfield.JSONField(default = [])
+
+    class Meta:
+        app_label = 'shopify_sync'

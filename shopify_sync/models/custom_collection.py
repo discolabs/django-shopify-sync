@@ -21,6 +21,9 @@ class CustomCollection(ShopifyResourceModel):
     title = models.CharField(max_length = 255)
     updated_at = models.DateTimeField()
 
+    class Meta:
+        app_label = 'shopify_sync'
+
     @property
     def collects(self):
         return Collect.objects.filter(self.user, collection_id = self.id)

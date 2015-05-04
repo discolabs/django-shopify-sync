@@ -25,6 +25,9 @@ class Product(ShopifyDatedResourceModel):
     title = models.CharField(max_length = 255, db_index = True)
     vendor = models.CharField(max_length = 255, db_index = True)
 
+    class Meta:
+        app_label = 'shopify_sync'
+
     @property
     def images(self):
         return Image.objects.filter(self.user, product_id = self.id)

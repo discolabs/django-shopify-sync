@@ -24,6 +24,9 @@ class Customer(ShopifyDatedResourceModel):
     total_spent = models.DecimalField(max_digits = 10, decimal_places = 2)
     verified_email = models.BooleanField(default = False)
 
+    class Meta:
+        app_label = 'shopify_sync'
+
     @property
     def addresses(self):
         return Address.objects.filter_for_user(self.user, customer = self)

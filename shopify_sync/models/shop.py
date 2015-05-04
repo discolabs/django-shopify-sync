@@ -65,3 +65,6 @@ class Shop(ShopifyResourceModel):
     eligible_for_payments = models.NullBooleanField(default = True, null = True)
     requires_extra_payments_agreement = models.NullBooleanField(default = True, null = True)
     source = models.CharField(max_length = 32, null = True)
+
+    class Meta:
+        app_label = 'shopify_sync'
