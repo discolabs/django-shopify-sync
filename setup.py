@@ -23,6 +23,7 @@ setup(
     ],
 
     tests_require = [
+        'python-dateutil >=2.4.2',
         'model_mommy >=1.2.1',
     ],
 
