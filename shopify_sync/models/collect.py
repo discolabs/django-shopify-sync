@@ -8,7 +8,7 @@ class Collect(ShopifyDatedResourceModel):
 
     collection_id = models.IntegerField()
     featured = models.BooleanField(default = False)
-    position = models.IntegerField(null = True)
+    position = models.IntegerField(null = True, default = 1)
     product_id = models.IntegerField()
     sort_value = models.CharField(max_length = 16, null = True)
 

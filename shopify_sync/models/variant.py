@@ -17,7 +17,7 @@ class Variant(ShopifyDatedResourceModel):
     option1 = models.CharField(max_length = 255, null = True)
     option2 = models.CharField(max_length = 255, null = True)
     option3 = models.CharField(max_length = 255, null = True)
-    position = models.IntegerField(default = 1)
+    position = models.IntegerField(null = True, default = 1)
     price = models.DecimalField(max_digits = 10, decimal_places = 2)
     product = models.ForeignKey('shopify_sync.Product')
     requires_shipping = models.BooleanField(default = True)

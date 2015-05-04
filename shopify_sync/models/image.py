@@ -8,7 +8,7 @@ class Image(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Image
     parent_field = 'product_id'
 
-    position = models.IntegerField(default = 1)
+    position = models.IntegerField(null = True, default = 1)
     product = models.ForeignKey('shopify_sync.Product')
     src = models.URLField()
 

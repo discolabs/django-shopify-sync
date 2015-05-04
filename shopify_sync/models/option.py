@@ -9,7 +9,7 @@ class Option(ShopifyResourceModel):
     parent_field = 'product_id'
 
     name = models.CharField(max_length = 255)
-    position = models.IntegerField(default = 1)
+    position = models.IntegerField(null = True, default = 1)
     product = models.ForeignKey('shopify_sync.Product')
 
     class Meta:

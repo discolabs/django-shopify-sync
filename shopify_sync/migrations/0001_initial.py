@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
                 ('updated_at', models.DateTimeField()),
                 ('collection_id', models.IntegerField()),
                 ('featured', models.BooleanField(default=False)),
-                ('position', models.IntegerField(null=True)),
+                ('position', models.IntegerField(null=True, default=1)),
                 ('product_id', models.IntegerField()),
                 ('sort_value', models.CharField(max_length=16, null=True)),
                 ('user', models.ForeignKey(editable=False, to=settings.AUTH_USER_MODEL)),
@@ -122,7 +122,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('created_at', models.DateTimeField()),
                 ('updated_at', models.DateTimeField()),
-                ('position', models.IntegerField(default=1)),
+                ('position', models.IntegerField(null=True, default=1)),
                 ('src', models.URLField()),
             ],
             options={
@@ -177,7 +177,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=255)),
-                ('position', models.IntegerField(default=1)),
+                ('position', models.IntegerField(null=True, default=1)),
             ],
             options={
             },
@@ -349,7 +349,7 @@ class Migration(migrations.Migration):
                 ('option1', models.CharField(max_length=255, null=True)),
                 ('option2', models.CharField(max_length=255, null=True)),
                 ('option3', models.CharField(max_length=255, null=True)),
-                ('position', models.IntegerField(default=1)),
+                ('position', models.IntegerField(null=True, default=1)),
                 ('price', models.DecimalField(max_digits=10, decimal_places=2)),
                 ('requires_shipping', models.BooleanField(default=True)),
                 ('sku', models.CharField(max_length=255, null=True)),
