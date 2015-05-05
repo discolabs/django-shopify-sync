@@ -160,7 +160,7 @@ class ShopifyResourceModel(UserOwnedModel):
         defaults hash.
         """
         default_fields_excluded = cls.get_default_fields_excluded()
-        return [field.name for field in cls._meta.concrete_fields if field.name not in default_fields_excluded]
+        return cls.get_parent_field_names() + [field.name for field in cls._meta.concrete_fields if field.name not in default_fields_excluded]
 
     @classmethod
     def get_default_fields_excluded(cls):
@@ -168,7 +168,7 @@ class ShopifyResourceModel(UserOwnedModel):
         Get a list of field names to be excluded when copying directly from a Shopify resource model and building
         a defaults hash.
         """
-        return ['user'] + cls.get_parent_field_names() + cls.get_related_field_names() + cls.get_child_fields().keys()
+        return ['user'] + cls.get_related_field_names() + cls.get_child_fields().keys()
 
     @classmethod
     def get_parent_field_names(cls):
