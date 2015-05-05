@@ -1,11 +1,10 @@
 import math
 import logging
-import json
 
 from django.db import models
 from django.core.serializers.json import DjangoJSONEncoder
-
 from owned_models.models import UserOwnedModel, UserOwnedManager
+
 from .. import SHOPIFY_API_PAGE_LIMIT
 
 
@@ -29,6 +28,12 @@ class ShopifyResourceManager(UserOwnedManager):
         Given a Shopify resource object, synchronise it locally so that we have an up-to-date version in the local
         database. Returns the created or updated local model.
         """
+        # Synchronise any related model field.
+        for related_field_name in self.model.get_related_field_names():
+            related_shopify_resource = getattr(shopify_resource, related_field_name)
+            related_model = getattr(self.model, related_field_name).field.rel.to
+            related_model.objects.sync_one(user, related_shopify_resource)
+
         # Synchronise instance.
         instance, created = self.update_or_create(user, id = shopify_resource.id, defaults = self.model.get_defaults(shopify_resource))
 
@@ -66,7 +71,7 @@ class ShopifyResourceManager(UserOwnedManager):
         Generator function, which fetches all Shopify resources matched by the given **kwargs filter.
         """
         with user.session:
-            total_count = self.model.shopify_resource_class.count()
+            total_count = self.model.shopify_resource_class.count(**kwargs)
             current_page, total_pages, kwargs['limit'] = get_shopify_pagination(total_count)
                         
             while current_page <= total_pages:
@@ -121,6 +126,7 @@ class ShopifyResourceModel(UserOwnedModel):
 
     shopify_resource_class = None
     parent_field = None
+    related_fields = []
     child_fields = {}
 
     objects = ShopifyResourceManager()
@@ -134,9 +140,17 @@ class ShopifyResourceModel(UserOwnedModel):
         resource.
         """
         defaults = {}
+
+        # Set simple attributes that we simply need to copy across.
         for field in cls.get_default_fields():
             if hasattr(shopify_resource, field):
                 defaults[field] = getattr(shopify_resource, field)
+
+        # Set ID values for foreign key references.
+        for related_field in cls.get_related_field_names():
+            if hasattr(shopify_resource, related_field):
+                defaults[related_field + '_id'] = getattr(getattr(shopify_resource, related_field), 'id')
+
         return defaults
 
     @classmethod
@@ -146,7 +160,7 @@ class ShopifyResourceModel(UserOwnedModel):
         defaults hash.
         """
         default_fields_excluded = cls.get_default_fields_excluded()
-        return cls.get_parent_fields() + [field.name for field in cls._meta.concrete_fields if field.name not in default_fields_excluded]
+        return [field.name for field in cls._meta.concrete_fields if field.name not in default_fields_excluded]
 
     @classmethod
     def get_default_fields_excluded(cls):
@@ -154,13 +168,23 @@ class ShopifyResourceModel(UserOwnedModel):
         Get a list of field names to be excluded when copying directly from a Shopify resource model and building
         a defaults hash.
         """
-        return ['user'] + cls.get_child_fields().keys()
+        return ['user'] + cls.get_parent_field_names() + cls.get_related_field_names() + cls.get_child_fields().keys()
 
     @classmethod
-    def get_parent_fields(cls):
+    def get_parent_field_names(cls):
+        """
+        Get a list of the names of parent fields for the current model.
+        """
         if cls.parent_field is None:
             return []
         return [cls.parent_field]
+
+    @classmethod
+    def get_related_field_names(cls):
+        """
+        Get a list of the names of related fields for the current model.
+        """
+        return cls.related_fields
 
     @classmethod
     def get_child_fields(cls):

@@ -1,42 +1,44 @@
 from django.db import models
 import shopify
-import jsonfield
+from jsonfield import JSONField
 
 from .base import ShopifyDatedResourceModel
 from .line_item import LineItem
+from ..encoders import ShopifyDjangoJSONEncoder
 
 
 class Order(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Order
+    related_fields = ['customer']
 
-    billing_address = jsonfield.JSONField()
+    billing_address = JSONField(dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     browser_ip = models.IPAddressField(null = True)
     buyer_accepts_marketing = models.BooleanField(default = False)
     cancel_reason = models.CharField(max_length = 32, null = True)
     cancelled_at = models.DateTimeField(null = True)
     cart_token = models.CharField(max_length = 32, null = True)
-    client_details = jsonfield.JSONField()
+    client_details = JSONField(dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     closed_at = models.DateTimeField(null = True)
     currency = models.CharField(max_length = 3)
     customer = models.ForeignKey('shopify_sync.Customer')
-    discount_codes = jsonfield.JSONField(default = [])
+    discount_codes = JSONField(default = [], dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     email = models.EmailField()
     financial_status = models.CharField(max_length = 32)
     fulfillment_status = models.CharField(max_length = 32, null = True)
     tags = models.TextField()
     landing_site = models.URLField(null = True)
     name = models.CharField(max_length = 32)
-    note = models.TextField()
-    note_attributes = jsonfield.JSONField()
+    note = models.TextField(null = True)
+    note_attributes = JSONField(dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     number = models.IntegerField()
     order_number = models.IntegerField()
     processed_at = models.DateTimeField()
     processing_method = models.CharField(max_length = 32)
-    referring_site = models.URLField(null = True)
-    shipping_address = jsonfield.JSONField(null = True)
-    shipping_lines = jsonfield.JSONField(default = [])
+    referring_site = models.URLField(max_length = 2048, null = True)
+    shipping_address = JSONField(null = True, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
+    shipping_lines = JSONField(default = [], dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     source_name = models.CharField(max_length = 32)
-    tax_lines = jsonfield.JSONField(default = [])
+    tax_lines = JSONField(default = [], dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     taxes_included = models.BooleanField(default = True)
     token = models.CharField(max_length = 32)
     total_discounts = models.DecimalField(max_digits = 10, decimal_places = 2)

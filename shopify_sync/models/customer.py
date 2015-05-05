@@ -8,6 +8,7 @@ from .order import Order
 
 class Customer(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Customer
+    related_fields = ['default_address']
 
     accepts_marketing = models.BooleanField(default = False)
     default_address = models.ForeignKey(Address, null = True, related_name = 'default_address')
