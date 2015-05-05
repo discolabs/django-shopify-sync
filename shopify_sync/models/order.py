@@ -59,7 +59,7 @@ class Order(ShopifyDatedResourceModel):
 
     @property
     def line_items(self):
-        return LineItem.objects.filter_for_user(self.user, order = self)
+        return LineItem.objects.filter(self.user, order = self)
 
     @property
     def refund(self):

@@ -30,8 +30,8 @@ class Customer(ShopifyDatedResourceModel):
 
     @property
     def addresses(self):
-        return Address.objects.filter_for_user(self.user, customer = self)
+        return Address.objects.filter(self.user, customer = self)
 
     @property
     def orders(self):
-        return Order.objects.filter_for_user(self.user, customer = self)
+        return Order.objects.filter(self.user, customer = self)

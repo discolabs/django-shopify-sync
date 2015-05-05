@@ -27,4 +27,4 @@ class SmartCollection(ShopifyResourceModel):
 
     @property
     def collects(self):
-        return Collect.objects.filter_for_user(self.user, collection_id = self.id)
+        return Collect.objects.filter(self.user, collection_id = self.id)
