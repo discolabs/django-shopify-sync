@@ -7,6 +7,7 @@ from .image import Image
 from .line_item import LineItem
 from .metafield import Metafield
 from .option import Option
+from .order import Order
 from .product import Product
 from .script_tag import ScriptTag
 from .shop import Shop
