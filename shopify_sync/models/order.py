@@ -4,12 +4,15 @@ from jsonfield import JSONField
 
 from .base import ShopifyDatedResourceModel
 from .line_item import LineItem
-from ..encoders import ShopifyDjangoJSONEncoder
+from ..encoders import ShopifyDjangoJSONEncoder, empty_list
 
 
 class Order(ShopifyDatedResourceModel):
     shopify_resource_class = shopify.resources.Order
     related_fields = ['customer']
+    child_fields = {
+        'line_items': LineItem,
+    }
 
     billing_address = JSONField(dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     browser_ip = models.IPAddressField(null = True)
@@ -21,7 +24,7 @@ class Order(ShopifyDatedResourceModel):
     closed_at = models.DateTimeField(null = True)
     currency = models.CharField(max_length = 3)
     customer = models.ForeignKey('shopify_sync.Customer')
-    discount_codes = JSONField(default = [], dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
+    discount_codes = JSONField(default = empty_list, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     email = models.EmailField()
     financial_status = models.CharField(max_length = 32)
     fulfillment_status = models.CharField(max_length = 32, null = True)
@@ -36,9 +39,9 @@ class Order(ShopifyDatedResourceModel):
     processing_method = models.CharField(max_length = 32)
     referring_site = models.URLField(max_length = 2048, null = True)
     shipping_address = JSONField(null = True, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
-    shipping_lines = JSONField(default = [], dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
+    shipping_lines = JSONField(default = empty_list, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     source_name = models.CharField(max_length = 32)
-    tax_lines = JSONField(default = [], dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
+    tax_lines = JSONField(default = empty_list, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     taxes_included = models.BooleanField(default = True)
     token = models.CharField(max_length = 32)
     total_discounts = models.DecimalField(max_digits = 10, decimal_places = 2)

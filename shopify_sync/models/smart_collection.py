@@ -4,7 +4,7 @@ import shopify
 
 from .base import ShopifyResourceModel
 from .collect import Collect
-from ..encoders import ShopifyDjangoJSONEncoder
+from ..encoders import ShopifyDjangoJSONEncoder, empty_list
 
 
 class SmartCollection(ShopifyResourceModel):
@@ -15,7 +15,7 @@ class SmartCollection(ShopifyResourceModel):
     image = JSONField(null = True, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     published_at = models.DateTimeField(null = True)
     published_scope = models.CharField(max_length = 16, default = 'global')
-    rules = JSONField(dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
+    rules = JSONField(default = empty_list, dump_kwargs = {'cls': ShopifyDjangoJSONEncoder})
     disjunctive = models.BooleanField(default = False)
     sort_order = models.CharField(max_length = 16)
     template_suffix = models.CharField(max_length = 32, null = True)

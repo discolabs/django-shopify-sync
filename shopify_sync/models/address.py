@@ -1,6 +1,7 @@
-from .base import ShopifyResourceModel
 from django.db import models
-import shopify, jsonfield
+import shopify
+
+from .base import ShopifyResourceModel
 
 
 class Address(ShopifyResourceModel):
